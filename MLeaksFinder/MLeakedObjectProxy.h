@@ -12,6 +12,12 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol MLeakedObjectProxyDelegate <NSObject>
+
+/// 查看详情
+- (void)didClickDetail;
+@end
+
 @interface MLeakedObjectProxy : NSObject
 
 + (BOOL)isAnyObjectLeakedAtPtrs:(NSSet *)ptrs;

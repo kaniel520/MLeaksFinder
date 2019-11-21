@@ -22,24 +22,32 @@ static __weak UIAlertController *g_alertVC;
 
 + (void)alertWithTitle:(NSString *)title
                message:(NSString *)message
-              delegate:(id<UIAlertViewDelegate>)delegate
+              delegate:(id<MLeakedObjectProxyDelegate>)delegate
  additionalButtonTitle:(NSString *)additionalButtonTitle {
-    
+    NSLog(@"可能存在内存泄漏：%@: %@", title, message);
     if (g_alertVC){
-        [g_alertVC dismissViewControllerAnimated:YES completion:nil];
+        return;
     }
     UIAlertController * alertVC = [UIAlertController
                                    alertControllerWithTitle:title
                                    message:message
                                    preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
         //do something when click button
     }];
     [alertVC addAction:okAction];
+    if (additionalButtonTitle.length > 0){
+        UIAlertAction *addtionaleAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            if(delegate && [delegate respondsToSelector:@selector(didClickDetail)]){
+                [delegate didClickDetail];
+            }
+        }];
+        [alertVC addAction:addtionaleAction];
+    }
+    
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertVC animated:YES completion:nil];
     g_alertVC = alertVC;
-    NSLog(@"%@: %@", title, message);
 }
 
 @end
