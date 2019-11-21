@@ -12,7 +12,7 @@
 
 #import "MLeaksMessenger.h"
 
-static __weak UIAlertController *alertVC;
+static __weak UIAlertController *g_alertVC;
 
 @implementation MLeaksMessenger
 
@@ -25,8 +25,8 @@ static __weak UIAlertController *alertVC;
               delegate:(id<UIAlertViewDelegate>)delegate
  additionalButtonTitle:(NSString *)additionalButtonTitle {
     
-    if (alertVC){
-        [alertVC dismissViewControllerAnimated:YES completion:nil];
+    if (g_alertVC){
+        [g_alertVC dismissViewControllerAnimated:YES completion:nil];
     }
     UIAlertController * alertVC = [UIAlertController
                                    alertControllerWithTitle:title
@@ -38,6 +38,7 @@ static __weak UIAlertController *alertVC;
     }];
     [alertVC addAction:okAction];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertVC animated:YES completion:nil];
+    g_alertVC = alertVC;
     NSLog(@"%@: %@", title, message);
 }
 
