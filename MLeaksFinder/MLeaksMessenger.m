@@ -38,7 +38,7 @@ static __weak UIAlertController *g_alertVC;
     }];
     [alertVC addAction:okAction];
     if (additionalButtonTitle.length > 0){
-        UIAlertAction *addtionaleAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        UIAlertAction *addtionaleAction = [UIAlertAction actionWithTitle:additionalButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
             if(delegate && [delegate respondsToSelector:@selector(didClickDetail)]){
                 [delegate didClickDetail];
             }
